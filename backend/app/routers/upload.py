@@ -7,13 +7,16 @@ router = APIRouter(prefix="/upload", tags=["upload"])
 
 @router.post("/referees")
 async def upload_referees(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
-    pass
+    count =  await import_referees(file, db)
+    return {"inserted": count}
 
 @router.post("/performances")
-async def upload_perfomances(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
-    pass
+async def upload_performances(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
+    count = await import_performances(file, db)
+    return {"inserted": count}
 
 @router.post("/assessments")
 async def upload_perfomances(file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
-    pass
+    count = await import_assessments(file, db)
+    return {"inserted": count}
 

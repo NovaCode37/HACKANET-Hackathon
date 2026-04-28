@@ -7,6 +7,7 @@ class Perfomance(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     region = Column(String)
+    city = Column(String)
     competition_type = Column(String)
     competition = Column(String)
     age_category = Column(String)
