@@ -1,0 +1,2 @@
+class Settings(BaseSettings):
+    pass

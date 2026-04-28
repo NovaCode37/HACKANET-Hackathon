@@ -2,33 +2,31 @@
 
 services:
 
-  # --- PostgreSQL база данных ---
   db:
     image: postgres:16-alpine
     restart: always
     environment:
-      POSTGRES_USER: user          # имя пользователя БД
-      POSTGRES_PASSWORD: password  # пароль (поменяй в проде)
-      POSTGRES_DB: aerobic         # имя базы данных
+      POSTGRES_USER: user         
+      POSTGRES_PASSWORD: password  
+      POSTGRES_DB: aerobic         
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # персистентное хранилище
+      - postgres_data:/var/lib/postgresql/data  
     ports:
-      - "5432:5432"   # открыть для подключения из IDE/DBeaver
+      - "5432:5432"   
 
-  # --- FastAPI бэкенд ---
   backend:
     build:
-      context: .          # собираем из текущей папки (где лежит DockerFile)
+      context: .          
       dockerfile: DockerFile
     restart: always
     env_file:
-      - .env              # переменные окружения (DATABASE_URL и др.)
+      - .env              
     ports:
-      - "8000:8000"       # API доступен на http://localhost:8000
+      - "8000:8000"       
     depends_on:
-      - db                # стартует только после db
+      - db  
     volumes:
-      - .:/app            # hot-reload: изменения в коде сразу применяются
+      - .:/app            
 
 volumes:
-  postgres_data:          # именованный том для данных PostgreSQL
+  postgres_data:          

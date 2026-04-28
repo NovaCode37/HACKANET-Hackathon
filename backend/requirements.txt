@@ -1,17 +1,8 @@
-# Web framework
 fastapi==0.111.0
 uvicorn[standard]==0.29.0
-
-# Database — async PostgreSQL
 sqlalchemy[asyncio]==2.0.30
 asyncpg==0.29.0
 alembic==1.13.1
-
-# Config / env-variables
 pydantic-settings==2.2.1
-
-# File upload (multipart/form-data)
 python-multipart==0.0.9
-
-# CSV parsing
 pandas==2.2.2
