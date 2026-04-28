@@ -1,0 +1,34 @@
+﻿version: "3.9"
+
+services:
+
+  # --- PostgreSQL база данных ---
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: user          # имя пользователя БД
+      POSTGRES_PASSWORD: password  # пароль (поменяй в проде)
+      POSTGRES_DB: aerobic         # имя базы данных
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # персистентное хранилище
+    ports:
+      - "5432:5432"   # открыть для подключения из IDE/DBeaver
+
+  # --- FastAPI бэкенд ---
+  backend:
+    build:
+      context: .          # собираем из текущей папки (где лежит DockerFile)
+      dockerfile: DockerFile
+    restart: always
+    env_file:
+      - .env              # переменные окружения (DATABASE_URL и др.)
+    ports:
+      - "8000:8000"       # API доступен на http://localhost:8000
+    depends_on:
+      - db                # стартует только после db
+    volumes:
+      - .:/app            # hot-reload: изменения в коде сразу применяются
+
+volumes:
+  postgres_data:          # именованный том для данных PostgreSQL
