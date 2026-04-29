@@ -43,6 +43,7 @@ export interface CompetitionListItem {
 }
 
 
+
 export interface CompetitionDetail extends CompetitionListItem {
   disciplines: string[]
   age_categories: string[]

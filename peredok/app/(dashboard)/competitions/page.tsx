@@ -15,10 +15,10 @@ export default function competitionsList() {
     query.length == 0 ? 
     <div>
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Введите название мероприятия" />
-        {mockCompetitions.map( (comp) => (<div><Link href={`/competitions/${comp.id}`}>{comp.name}</Link>{comp.type}{comp.execution_accuracy}{comp.artistic_accuracy}</div>) )}
+        {mockCompetitions.map( (comp) => (<div key={comp.id}><Link href={`/competitions/${comp.id}`}>{comp.name}</Link>{comp.type}{comp.execution_accuracy}{comp.artistic_accuracy}</div>) )}
     </div> : <div>
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Введите название мероприятия" />
-        {mockCompetitions.filter( (comp) => comp.name.toLowerCase().includes(query.toLowerCase())).map( (comp) => (<div><Link href={`/competitions/${comp.id}`}>{comp.name}</Link>{comp.type}{comp.execution_accuracy}{comp.artistic_accuracy}</div>) )}
+        {mockCompetitions.filter( (comp) => comp.name.toLowerCase().includes(query.toLowerCase())).map( (comp) => (<div key={comp.id}><Link href={`/competitions/${comp.id}`}>{comp.name}</Link>{comp.type}{comp.execution_accuracy}{comp.artistic_accuracy}</div>) )}
     </div>
     )
 }

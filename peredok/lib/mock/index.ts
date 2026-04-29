@@ -1,4 +1,4 @@
-import type { CompetitionListItem, CompetitionDetail, JudgeListItem } from '../types'
+import type { CompetitionListItem, CompetitionDetail, JudgeListItem, HeatmapData } from '../types'
 
 export const mockCompetitions: CompetitionListItem[] = [
   {
@@ -74,6 +74,34 @@ export const mockCompetitions: CompetitionListItem[] = [
     avg_scrores: 8.4
   },
 ]
+
+export const mockHeatmapData: HeatmapData = {
+  judges: [
+    { id: 1, fio: 'Иванова Мария Сергеевна' },
+    { id: 2, fio: 'Петров Алексей Владимирович' },
+    { id: 3, fio: 'Сидорова Елена Ивановна' },
+    { id: 4, fio: 'Козлов Дмитрий Петрович' },
+  ],
+  regions: ['Москва', 'Санкт-Петербург', 'Краснодар', 'Новосибирск'],
+  cells: [
+    { referee_id: 1, referee_name: 'Иванова Мария Сергеевна', region: 'Москва',          avg_deviation: 0.05, performance_count: 4 },
+    { referee_id: 1, referee_name: 'Иванова Мария Сергеевна', region: 'Санкт-Петербург', avg_deviation: 0.32, performance_count: 3 },
+    { referee_id: 1, referee_name: 'Иванова Мария Сергеевна', region: 'Краснодар',       avg_deviation: 0.41, performance_count: 2 },
+    { referee_id: 1, referee_name: 'Иванова Мария Сергеевна', region: 'Новосибирск',     avg_deviation: 0.55, performance_count: 3 },
+    { referee_id: 2, referee_name: 'Петров Алексей Владимирович', region: 'Москва',          avg_deviation: 0.28, performance_count: 4 },
+    { referee_id: 2, referee_name: 'Петров Алексей Владимирович', region: 'Санкт-Петербург', avg_deviation: 0.08, performance_count: 3 },
+    { referee_id: 2, referee_name: 'Петров Алексей Владимирович', region: 'Краснодар',       avg_deviation: 0.35, performance_count: 2 },
+    { referee_id: 2, referee_name: 'Петров Алексей Владимирович', region: 'Новосибирск',     avg_deviation: 0.62, performance_count: 3 },
+    { referee_id: 3, referee_name: 'Сидорова Елена Ивановна', region: 'Москва',          avg_deviation: 0.45, performance_count: 4 },
+    { referee_id: 3, referee_name: 'Сидорова Елена Ивановна', region: 'Санкт-Петербург', avg_deviation: 0.38, performance_count: 3 },
+    { referee_id: 3, referee_name: 'Сидорова Елена Ивановна', region: 'Краснодар',       avg_deviation: 0.06, performance_count: 2 },
+    { referee_id: 3, referee_name: 'Сидорова Елена Ивановна', region: 'Новосибирск',     avg_deviation: 0.29, performance_count: 3 },
+    { referee_id: 4, referee_name: 'Козлов Дмитрий Петрович', region: 'Москва',          avg_deviation: 0.12, performance_count: 4 },
+    { referee_id: 4, referee_name: 'Козлов Дмитрий Петрович', region: 'Санкт-Петербург', avg_deviation: 0.51, performance_count: 3 },
+    { referee_id: 4, referee_name: 'Козлов Дмитрий Петрович', region: 'Краснодар',       avg_deviation: 0.44, performance_count: 2 },
+    { referee_id: 4, referee_name: 'Козлов Дмитрий Петрович', region: 'Новосибирск',     avg_deviation: 0.18, performance_count: 3 },
+  ],
+}
 
 export const mockCompetitionDetail: CompetitionDetail = {
   ...mockCompetitions[0],
