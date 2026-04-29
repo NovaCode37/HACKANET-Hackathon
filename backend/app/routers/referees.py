@@ -27,6 +27,12 @@ async def get_referee_profile(referee_id: int, type: str = Query(None),
         .join(Performance, Assessment.performance_id == Performance.id)
         .where(Assessment.referee_id == referee_id)
     )
+    if type:
+        query = query.where(Performance.competition_type == type)
+    if age_category:
+        query = query.where(Performance.age_category == age_category)
+    if competition:
+        query = query.where(Performance.competition == competition)
     rows = (await db.execute(query)).all()
     assessments = [a for a, p in rows]
 

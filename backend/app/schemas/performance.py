@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-class PerfomanceBase(BaseModel):
+class PerformanceBase(BaseModel):
     region: str | None = None
     city: str | None = None
     competition_type: str
@@ -8,9 +8,9 @@ class PerfomanceBase(BaseModel):
     age_category: str
     discipline: str
 
-class PerfomanceCreate(PerfomanceBase):
+class PerformanceCreate(PerformanceBase):
     id: int
 
-class PerfomanceOut(PerfomanceCreate):
+class PerformanceOut(PerformanceCreate):
     id: int
     model_config = ConfigDict(from_attributes=True)
