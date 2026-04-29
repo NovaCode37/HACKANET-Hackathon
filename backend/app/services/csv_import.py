@@ -7,9 +7,12 @@ from ..models import Referee, Performance, Assessment
 
 async def import_referees(file: UploadFile, db: AsyncSession) -> int:
     content = await file.read()
-    text = content.decode("utf-8")
+    text = content.decode("utf-8-sig")
 
-    reader = csv.DictReader(io.StringIO(text))
+    reader = csv.DictReader(
+        io.StringIO(text),
+        fieldnames=["id", "fio", "region", "city"],
+    )
 
     inserted = 0
     for row in reader:
@@ -30,9 +33,12 @@ async def import_referees(file: UploadFile, db: AsyncSession) -> int:
 
 async def import_performances(file: UploadFile, db: AsyncSession) -> int:
     content = await file.read()
-    text = content.decode("utf-8")
+    text = content.decode("utf-8-sig")
 
-    reader = csv.DictReader(io.StringIO(text))
+    reader = csv.DictReader(
+        io.StringIO(text),
+        fieldnames=["id", "region", "city", "competition_type", "competition", "age_category", "discipline"],
+    )
 
     inserted = 0
     for row in reader:
@@ -55,9 +61,12 @@ async def import_performances(file: UploadFile, db: AsyncSession) -> int:
 
 async def import_assessments(file: UploadFile, db: AsyncSession) -> int:
     content = await file.read()
-    text = content.decode("utf-8")
+    text = content.decode("utf-8-sig")
 
-    reader = csv.DictReader(io.StringIO(text))
+    reader = csv.DictReader(
+        io.StringIO(text),
+        fieldnames=["id", "referee_id", "performance_id", "type", "number", "referee_assessment", "result_type_assessment", "result_assessment"],
+    )
 
     inserted = 0
     for row in reader:
