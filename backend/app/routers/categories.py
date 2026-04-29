@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..database import get_db
-from ..models import Performance, Assessment
+from ..models import Performance, Assessment, Referee
 
 router = APIRouter(prefix="/categories", tags=["categories"])
 
@@ -33,35 +33,53 @@ async def get_category_heatmap(competition_name: str, age_category: str,
             regions.add(p.region)
     regions = sorted(regions)
 
-    judges = sorted(set(a.number for a in rows))
+    judge_map = {}
+    for a in rows:
+        if a.referee_id not in judge_map:
+            referee = await db.get(Referee, a.referee_id)
+            if referee:
+                judge_map[a.referee_id] = referee
 
     matrix = {}
     counts = {}
-    for judge in judges:
-        matrix[judge] = {}
-        counts[judge] = {}
+    for rid in judge_map:
+        matrix[rid] = {}
+        counts[rid] = {}
         for region in regions:
-            matrix[judge][region] = 0.0
-            counts[judge][region] = 0
+            matrix[rid][region] = 0.0
+            counts[rid][region] = 0
 
     for a in rows:
         perf = perf_map.get(a.performance_id)
         if not perf or not perf.region:
             continue
+        if a.referee_id not in matrix:
+            continue
         deviation = a.referee_assessment - a.result_type_assessment
-        matrix[a.number][perf.region] += deviation
-        counts[a.number][perf.region] += 1
+        matrix[a.referee_id][perf.region] += deviation
+        counts[a.referee_id][perf.region] += 1
 
-    for judge in judges:
+    for rid in judge_map:
         for region in regions:
-            if counts[judge][region] > 0:
-                matrix[judge][region] = round(matrix[judge][region] / counts[judge][region], 3)
+            if counts[rid][region] > 0:
+                matrix[rid][region] = round(matrix[rid][region] / counts[rid][region], 3)
+
+    judges_out = [{"id": r.id, "fio": r.fio} for r in judge_map.values()]
+
+    cells = []
+    for rid, ref in judge_map.items():
+        for region in regions:
+            if counts[rid][region] > 0:
+                cells.append({
+                    "referee_id": ref.id,
+                    "referee_name": ref.fio,
+                    "region": region,
+                    "avg_deviation": matrix[rid][region],
+                    "performance_count": counts[rid][region],
+                })
 
     return {
-        "competition": competition_name,
-        "age_category": age_category,
-        "discipline": discipline,
-        "judges": judges,
+        "judges": judges_out,
         "regions": regions,
-        "matrix": matrix,
+        "cells": cells,
     }
