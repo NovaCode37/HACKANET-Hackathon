@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import upload, competitions, categories, referees
+from .database import engine, Base
 
 app = FastAPI(title="Aerobic.space API", version="1.0.0")
 
@@ -10,3 +11,10 @@ app.include_router(upload.router, prefix="/api")
 app.include_router(competitions.router, prefix="/api")
 app.include_router(categories.router, prefix="/api")
 app.include_router(referees.router, prefix="/api")
+
+@router.one_event("/startup")
+async def startup():
+    async with engine.begin() as  conn:
+        await conn.run_async(Base.metadata.create_all)
+
+        

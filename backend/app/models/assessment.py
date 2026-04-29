@@ -7,7 +7,7 @@ class Assessment(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     referee_id = Column(Integer, ForeignKey("referees.id"))
-    perfomance_id = Column(Integer, ForeignKey("perfomance.id"))
+    performance_id = Column(Integer, ForeignKey("performances.id"))
     type = Column(String)
     number = Column(Integer)
     referee_assessment = Column(Float)

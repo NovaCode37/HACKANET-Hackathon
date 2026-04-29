@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict
 
 class AssessmentBase(BaseModel):
     referee_id: int 
-    perfomance_id: int
+    performance_id: int
     type: str
     number: int
     referee_assessment: float 

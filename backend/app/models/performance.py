@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from ..database import Base
 
-class Perfomance(Base):
-    __tablename__ = "perfomances"
+class Performance(Base):
+    __tablename__ = "performances"
     
     id = Column(Integer, primary_key=True, index=True)
     region = Column(String)
