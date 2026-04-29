@@ -12,9 +12,9 @@ app.include_router(competitions.router, prefix="/api")
 app.include_router(categories.router, prefix="/api")
 app.include_router(referees.router, prefix="/api")
 
-@router.one_event("/startup")
+@app.on_event("startup")
 async def startup():
-    async with engine.begin() as  conn:
-        await conn.run_async(Base.metadata.create_all)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
         
