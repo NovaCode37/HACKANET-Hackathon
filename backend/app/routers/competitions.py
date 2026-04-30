@@ -80,20 +80,24 @@ async def get_competitions_detail(competition_name: str, db: AsyncSession = Depe
     disciplines = sorted(set(p.discipline for p in performances))
     age_categories = sorted(set(p.age_category for p in performances))
 
-    exec_ok = 0
-    exec_total = 0
-    art_ok = 0
-    art_total = 0
+    exec_bull = exec_allow = exec_serious = 0
+    art_bull = art_allow = art_serious = 0
     for a in rows:
         label = classify_accuracy(a.referee_assessment, a.result_type_assessment)
         if a.type == "EXECUTION":
-            exec_total += 1
-            if label != "serious":
-                exec_ok += 1
+            if label == "bullseye": exec_bull += 1
+            elif label == "allowable": exec_allow += 1
+            else: exec_serious += 1
         elif a.type == "ARTISTIC":
-            art_total += 1
-            if label != "serious":
-                art_ok += 1
+            if label == "bullseye": art_bull += 1
+            elif label == "allowable": art_allow += 1
+            else: art_serious += 1
+
+    exec_total = exec_bull + exec_allow + exec_serious
+    exec_ok = exec_bull + exec_allow
+    art_total = art_bull + art_allow + art_serious
+    art_ok = art_bull + art_allow
+    total_serious = exec_serious + art_serious
 
     avg_score = sum(a.result_assessment for a in rows) / len(rows) if rows else 0
 
@@ -149,15 +153,13 @@ async def get_competitions_detail(competition_name: str, db: AsyncSession = Depe
         ref_assessments = [a for a in rows if a.referee_id == rid]
         ref_rows = [(a, perf_map[a.performance_id]) for a in ref_assessments if a.performance_id in perf_map]
 
-        acc = calc_accuracy_percent(ref_assessments)
         bias = calc_bias(referee.region, referee.city, ref_rows)
-        avg_ref_score = sum(a.referee_assessment for a in ref_assessments) / len(ref_assessments)
+        avg_dev = sum(abs(a.referee_assessment - a.result_type_assessment) for a in ref_assessments) / len(ref_assessments) if ref_assessments else 0
 
         judges.append({
             "referee": {"id": referee.id, "fio": referee.fio, "region": referee.region, "city": referee.city},
-            "type": ref_assessments[0].type if ref_assessments else "EXECUTION",
-            "avg_score": round(avg_ref_score, 2),
-            "accuracy_percent": round(acc, 1),
+            "avg_deviation": round(avg_dev, 2),
+            "assessment_count": len(ref_assessments),
             "bias_coefficient": round(bias, 2),
         })
 
@@ -169,6 +171,14 @@ async def get_competitions_detail(competition_name: str, db: AsyncSession = Depe
         "artistic_accuracy": round(art_ok / art_total * 100, 1) if art_total else 0,
         "performance_count": len(performances),
         "avg_scrores": round(avg_score, 1),
+        "total_assessments": len(rows),
+        "serious_count": total_serious,
+        "execution_bullseye": exec_bull,
+        "execution_allowable": exec_allow,
+        "execution_serious": exec_serious,
+        "artistic_bullseye": art_bull,
+        "artistic_allowable": art_allow,
+        "artistic_serious": art_serious,
         "disciplines": disciplines,
         "age_categories": age_categories,
         "categories": categories,

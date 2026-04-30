@@ -1,10 +1,12 @@
 "use client"
 
-import { useState } from "react"
-import { mockJudgeProfile } from "@/lib/mock"
+import { useState, useEffect, use } from "react"
+import { fetchJudgeProfile } from "@/lib/api"
+import type { JudgeProfile } from "@/lib/types"
 import Link from "next/link"
 import type { JudgeType, AccuracyCategory } from "@/lib/types"
 import { motion } from "framer-motion"
+import { disciplineName } from "@/lib/disciplines"
 
 const PAGE_SIZE = 12
 
@@ -20,12 +22,20 @@ function deviationColor(dev: number) {
   return 'text-red-500'
 }
 
-export default function JudgeProfilePage({ params }: { params: { id: string } }) {
-  const data = mockJudgeProfile
+export default function JudgeProfilePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)
+  const [data, setData] = useState<JudgeProfile | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchJudgeProfile(Number(id)).then(setData).finally(() => setLoading(false))
+  }, [id])
 
   const [tab, setTab] = useState<JudgeType>('EXECUTION')
   const [competition, setCompetition] = useState('')
   const [discipline, setDiscipline] = useState('')
+
+  if (loading || !data) return <div className="flex items-center justify-center min-h-[40vh] text-slate-400">{loading ? 'Загрузка...' : 'Судья не найден'}</div>
 
   const competitions = Array.from(new Set(data.performances.map(p => p.performance.competition)))
   const disciplines  = Array.from(new Set(data.performances.map(p => p.performance.discipline)))
@@ -105,7 +115,7 @@ export default function JudgeProfilePage({ params }: { params: { id: string } })
           className="border rounded-lg px-3 py-2 text-sm text-slate-700 bg-white focus:outline-none focus:border-blue-400"
         >
           <option value="">Все дисциплины</option>
-          {disciplines.map(d => <option key={d} value={d}>{d}</option>)}
+          {disciplines.map(d => <option key={d} value={d}>{disciplineName(d)}</option>)}
         </select>
       </div>
 
@@ -150,7 +160,7 @@ export default function JudgeProfilePage({ params }: { params: { id: string } })
               <tr key={p.performance.id} className="border-t hover:bg-slate-50">
                 <td className="px-4 py-3 text-center text-slate-400">{i + 1}</td>
                 <td className="px-4 py-3">
-                  <span className="font-medium text-slate-800">{p.performance.discipline}</span>
+                  <span className="font-medium text-slate-800">{disciplineName(p.performance.discipline)}</span>
                   <span className="ml-2 text-xs text-slate-400">{p.performance.age_category}</span>
                 </td>
                 <td className="px-4 py-3 text-center text-slate-700">{p.my_score.toFixed(2)}</td>

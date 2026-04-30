@@ -1,3 +1,6 @@
+"use client"
+
+import { use } from "react";
 import { mockHeatmapData } from "@/lib/mock";
 import Link from "next/link";
 
@@ -7,14 +10,15 @@ function deviationColor(value: number) {
     return 'bg-red-100 text-red-700'
 }
 
-export default function Heatmap({params} : {params : {id : string, categoryId : string}}) {
+export default function Heatmap({params} : {params : Promise<{id : string, categoryId : string}>}) {
+    const { id, categoryId } = use(params)
 
     const data = mockHeatmapData
 
     return (
         <div className="space-y-4">
             <h1 className="text-2xl font-bold">Тепловая карта</h1>
-            <Link href={`/competitions/${params.id}`} className="text-blue-600 underline">Назад</Link>
+            <Link href={`/competitions/${id}`} className="text-blue-600 underline">Назад</Link>
             <table className="border-collapse">
                 <thead>
                     <tr>

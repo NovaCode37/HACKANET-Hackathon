@@ -50,12 +50,15 @@ export default function UploadPage() {
     setLoading(true)
     setStatus('Загрузка...')
     try {
-      const fd = new FormData()
-      fd.append('referees', files.referees)
-      fd.append('performances', files.performances)
-      fd.append('assessments', files.assessments)
-      const res = await fetch('/api/upload', { method: 'POST', body: fd })
-      if (!res.ok) throw new Error('Ошибка загрузки')
+      for (const step of steps) {
+        const fd = new FormData()
+        fd.append('file', files[step.key]!)
+        const res = await fetch(`/api/upload/${step.key}`, { method: 'POST', body: fd })
+        if (!res.ok) {
+          const body = await res.json().catch(() => null)
+          throw new Error(body?.detail ?? `Ошибка загрузки (${step.label})`)
+        }
+      }
       setStatus('Файлы успешно загружены')
     } catch (e) {
       setStatus('Ошибка: ' + (e instanceof Error ? e.message : 'неизвестная'))

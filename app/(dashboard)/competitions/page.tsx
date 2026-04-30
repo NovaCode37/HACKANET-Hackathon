@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { mockCompetitions } from "@/lib/mock"
+import { useState, useEffect } from "react"
+import { fetchCompetitions } from "@/lib/api"
+import type { CompetitionListItem } from "@/lib/types"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -11,8 +12,16 @@ export default function CompetitionsPage() {
   const router = useRouter()
   const [filter, setFilter] = useState<FilterType>('all')
   const [query, setQuery] = useState('')
+  const [competitions, setCompetitions] = useState<CompetitionListItem[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const filtered = mockCompetitions.filter(c => {
+  useEffect(() => {
+    fetchCompetitions().then(setCompetitions).finally(() => setLoading(false))
+  }, [])
+
+  if (loading) return <div className="flex items-center justify-center min-h-[40vh] text-slate-400">Загрузка...</div>
+
+  const filtered = competitions.filter(c => {
     const matchesType = filter === 'all' || c.type === filter
     const matchesQuery = c.name.toLowerCase().includes(query.toLowerCase())
     return matchesType && matchesQuery

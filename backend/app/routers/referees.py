@@ -40,6 +40,7 @@ async def get_referees(search: str = Query(None), db: AsyncSession = Depends(get
             "execution_accuracy": round(exec_acc, 1),
             "artistic_accuracy": round(art_acc, 1),
             "bias_coefficient": round(bias, 2),
+            "total_assessments": len(rows),
         })
 
     return items
@@ -72,6 +73,11 @@ async def get_referee_profile(referee_id: int, type: str = Query(None),
     art_acc = calc_accuracy_percent(art_assessments)
     bias = calc_bias(referee.region, referee.city, rows)
 
+    all_assessments = [a for a, p in rows]
+    bullseye = sum(1 for a in all_assessments if classify_accuracy(a.referee_assessment, a.result_type_assessment) == 'bullseye')
+    allowable = sum(1 for a in all_assessments if classify_accuracy(a.referee_assessment, a.result_type_assessment) == 'allowable')
+    serious = sum(1 for a in all_assessments if classify_accuracy(a.referee_assessment, a.result_type_assessment) == 'serious')
+
     performances_out = []
     for a, p in rows:
         others_q = (
@@ -101,5 +107,9 @@ async def get_referee_profile(referee_id: int, type: str = Query(None),
         "execution_accuracy": round(exec_acc, 1),
         "artistic_accuracy": round(art_acc, 1),
         "bias_coefficient": round(bias, 2),
+        "bullseye_count": bullseye,
+        "allowable_count": allowable,
+        "serious_count": serious,
+        "total_count": len(rows),
         "performances": performances_out,
     }

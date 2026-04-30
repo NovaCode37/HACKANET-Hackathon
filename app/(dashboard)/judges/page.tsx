@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { mockJudges } from "@/lib/mock"
+import { useState, useEffect } from "react"
+import { fetchJudges } from "@/lib/api"
+import type { JudgeListItem } from "@/lib/types"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -19,14 +20,22 @@ function biasColor(value: number) {
 
 export default function JudgesPage() {
   const [query, setQuery] = useState('')
+  const [judges, setJudges] = useState<JudgeListItem[]>([])
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const filtered = mockJudges.filter(j =>
+  useEffect(() => {
+    fetchJudges().then(setJudges).finally(() => setLoading(false))
+  }, [])
+
+  const filtered = judges.filter(j =>
     j.fio.toLowerCase().includes(query.toLowerCase())
   )
 
-  const accuracy = (j: typeof mockJudges[0]) =>
+  const accuracy = (j: JudgeListItem) =>
     j.execution_accuracy > 0 ? j.execution_accuracy : j.artistic_accuracy
+
+  if (loading) return <div className="flex items-center justify-center min-h-[40vh] text-slate-400">Загрузка...</div>
 
   return (
     <div className="space-y-6">
