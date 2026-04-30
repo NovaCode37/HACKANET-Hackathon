@@ -6,9 +6,9 @@ class Performance(Base):
     __tablename__ = "performances"
     
     id = Column(Integer, primary_key=True, index=True)
-    region = Column(String)
-    city = Column(String)
-    competition_type = Column(String)
-    competition = Column(String)
-    age_category = Column(String)
-    discipline = Column(String)
+    region = Column(String, nullable=False, default="", index=True)
+    city = Column(String, nullable=False, default="", index=True)
+    competition_type = Column(String, nullable=False, default="", index=True)
+    competition = Column(String, nullable=False, default="", index=True)
+    age_category = Column(String, nullable=False, default="", index=True)
+    discipline = Column(String, nullable=False, default="", index=True)

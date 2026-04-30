@@ -7,5 +7,5 @@ class Referee(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     fio = Column(String, nullable=False)
-    region = Column(String)
-    city = Column(String)
+    region = Column(String, nullable=False, default="")
+    city = Column(String, nullable=False, default="")

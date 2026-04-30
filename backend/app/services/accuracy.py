@@ -28,3 +28,23 @@ def calc_accuracy_percent(assessments: list) -> float:
             counter += 1
 
     return counter / len(assessments) * 100
+
+
+def calc_exec_art_accuracy(assessments: list) -> tuple[float, float]:
+    exec_ok = 0
+    exec_total = 0
+    art_ok = 0
+    art_total = 0
+    for a in assessments:
+        label = classify_accuracy(a.referee_assessment, a.result_type_assessment)
+        if a.type == "EXECUTION":
+            exec_total += 1
+            if label != "serious":
+                exec_ok += 1
+        elif a.type == "ARTISTIC":
+            art_total += 1
+            if label != "serious":
+                art_ok += 1
+    exec_acc = round(exec_ok / exec_total * 100, 1) if exec_total else 0
+    art_acc = round(art_ok / art_total * 100, 1) if art_total else 0
+    return exec_acc, art_acc

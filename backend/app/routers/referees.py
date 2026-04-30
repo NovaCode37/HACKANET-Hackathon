@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from ..database import get_db
@@ -49,6 +49,8 @@ async def get_referee_profile(referee_id: int, type: str = Query(None),
                                 age_category: str = Query(None), competition: str = Query(None),
                                 db: AsyncSession = Depends(get_db)):
     referee = await db.get(Referee, referee_id)
+    if referee is None:
+        raise HTTPException(status_code=404, detail="Referee not found")
 
     query = (
         select(Assessment, Performance)

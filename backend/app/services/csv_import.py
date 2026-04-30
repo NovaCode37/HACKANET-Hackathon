@@ -19,8 +19,8 @@ async def import_referees(file: UploadFile, db: AsyncSession) -> int:
         stmt = insert(Referee).values(
             id=int(row["id"]),
             fio=row["fio"],
-            region=row.get("region"),
-            city=row.get("city"),
+            region=row.get("region") or "",
+            city=row.get("city") or "",
         ).on_conflict_do_nothing(index_elements=["id"])
 
         result = await db.execute(stmt)
@@ -44,12 +44,12 @@ async def import_performances(file: UploadFile, db: AsyncSession) -> int:
     for row in reader:
         stmt = insert(Performance).values(
             id=int(row["id"]),
-            region=row.get("region"),
-            city=row.get("city"),
-            competition_type=row.get("competition_type"),
-            competition=row.get("competition"),
-            age_category=row.get("age_category"),
-            discipline=row.get("discipline"),
+            region=row.get("region") or "",
+            city=row.get("city") or "",
+            competition_type=row.get("competition_type") or "",
+            competition=row.get("competition") or "",
+            age_category=row.get("age_category") or "",
+            discipline=row.get("discipline") or "",
         ).on_conflict_do_nothing(index_elements=["id"])
 
         result = await db.execute(stmt)

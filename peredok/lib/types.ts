@@ -1,6 +1,6 @@
 export type JudgeType = 'EXECUTION' | 'ARTISTIC'
 export type CompetitionType = 'RUSSIA' | 'REGION'
-export type AccuracyCategory = 'bullseye' | 'allowable' | 'serious'
+export type AccuracyCategory = 'bullseye' | 'acceptable' | 'serious'
 
 
 export interface Referee {
