@@ -1,4 +1,4 @@
-import type { CompetitionListItem, CompetitionDetail, JudgeListItem, HeatmapData } from '../types'
+import type { CompetitionListItem, CompetitionDetail, JudgeListItem, HeatmapData, JudgeProfile } from '../types'
 
 export const mockCompetitions: CompetitionListItem[] = [
   {
@@ -137,6 +137,60 @@ export const mockCompetitionDetail: CompetitionDetail = {
     },
   ],
   judges: [],
+}
+
+export const mockJudgeProfile: JudgeProfile = {
+  referee: { id: 1, fio: 'Иванова Мария Сергеевна', region: 'Москва', city: 'Москва' },
+  execution_accuracy: 91.2,
+  artistic_accuracy: 78.4,
+  bias_coefficient: 0.12,
+  performances: [
+    {
+      performance: { id: 101, region: 'Москва', city: 'Москва', competition_type: 'RUSSIA', competition: 'Чемпионат России 2024', age_category: 'Взрослые 18+', discipline: 'Индивидуальные женщины' },
+      type: 'EXECUTION',
+      my_score: 8.5,
+      other_scores: [8.4, 8.6, 8.5],
+      result_score: 8.5,
+      deviation: 0,
+      accuracy: 'bullseye',
+    },
+    {
+      performance: { id: 102, region: 'Санкт-Петербург', city: 'Санкт-Петербург', competition_type: 'RUSSIA', competition: 'Чемпионат России 2024', age_category: 'Взрослые 18+', discipline: 'Индивидуальные мужчины' },
+      type: 'EXECUTION',
+      my_score: 7.8,
+      other_scores: [8.1, 8.0, 8.2],
+      result_score: 8.05,
+      deviation: 0.25,
+      accuracy: 'allowable',
+    },
+    {
+      performance: { id: 103, region: 'Краснодар', city: 'Краснодар', competition_type: 'REGION', competition: 'Кубок Краснодара', age_category: 'Юниоры 15-17', discipline: 'Смешанные пары' },
+      type: 'EXECUTION',
+      my_score: 7.2,
+      other_scores: [7.8, 7.7, 7.9],
+      result_score: 7.8,
+      deviation: 0.6,
+      accuracy: 'serious',
+    },
+    {
+      performance: { id: 104, region: 'Москва', city: 'Москва', competition_type: 'RUSSIA', competition: 'Первенство юниоров', age_category: 'Юниоры 12-14', discipline: 'Группа' },
+      type: 'ARTISTIC',
+      my_score: 9.1,
+      other_scores: [9.0, 9.2, 9.1],
+      result_score: 9.1,
+      deviation: 0,
+      accuracy: 'bullseye',
+    },
+    {
+      performance: { id: 105, region: 'Новосибирск', city: 'Новосибирск', competition_type: 'REGION', competition: 'Чемпионат СФО', age_category: 'Взрослые 18+', discipline: 'Трио' },
+      type: 'ARTISTIC',
+      my_score: 6.5,
+      other_scores: [7.2, 7.1, 7.3],
+      result_score: 7.2,
+      deviation: 0.7,
+      accuracy: 'serious',
+    },
+  ],
 }
 
 export const mockJudges: JudgeListItem[] = [
