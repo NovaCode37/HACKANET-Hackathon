@@ -36,15 +36,23 @@ export interface CompetitionListItem {
   id: string
   name: string
   type: CompetitionType
-  execution_accuracy: number   
+  execution_accuracy: number
   artistic_accuracy: number
   performance_count: number
   avg_scrores: number
 }
 
-
-
 export interface CompetitionDetail extends CompetitionListItem {
+  city: string
+  date: string
+  total_assessments: number
+  serious_count: number
+  execution_bullseye: number
+  execution_allowable: number
+  execution_serious: number
+  artistic_bullseye: number
+  artistic_allowable: number
+  artistic_serious: number
   disciplines: string[]
   age_categories: string[]
   categories: CategoryStats[]
@@ -63,9 +71,8 @@ export interface CategoryStats {
 
 export interface JudgeSummary {
   referee: Referee
-  type: JudgeType
-  avg_score: number
-  accuracy_percent: number
+  avg_deviation: number
+  assessment_count: number
   bias_coefficient: number
 }
 
@@ -74,7 +81,7 @@ export interface HeatmapCell {
   referee_id: number
   referee_name: string
   region: string
-  avg_deviation: number
+  value: number
   performance_count: number
 }
 
@@ -92,6 +99,7 @@ export interface JudgeListItem {
   execution_accuracy: number
   artistic_accuracy: number
   bias_coefficient: number
+  total_assessments: number
 }
 
 export interface JudgeProfile {
@@ -99,6 +107,10 @@ export interface JudgeProfile {
   execution_accuracy: number
   artistic_accuracy: number
   bias_coefficient: number
+  bullseye_count: number
+  allowable_count: number
+  serious_count: number
+  total_count: number
   performances: JudgePerformanceRow[]
 }
 

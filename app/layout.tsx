@@ -1,9 +1,16 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Lexend, Nunito_Sans } from 'next/font/google'
 import './globals.css'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+const lexend = Lexend({
+  subsets: ['latin'],
+  variable: '--font-lexend',
+})
+
+const nunitoSans = Nunito_Sans({
+  subsets: ['latin', 'cyrillic'],
+  variable: '--font-nunito-sans',
+})
 
 export const metadata: Metadata = {
   title: 'Aerobic.Space — Анализ судейских оценок',
@@ -12,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
+    <html lang="ru" className={`${lexend.variable} ${nunitoSans.variable} h-full`}>
       <body className="h-full antialiased">{children}</body>
     </html>
   )

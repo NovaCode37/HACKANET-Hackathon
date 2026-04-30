@@ -30,7 +30,7 @@ export default function Heatmap({params} : {params : {id : string, categoryId : 
                             <td className="border px-3 py-2">{jud.fio}</td>
                             {data.regions.map(r => {
                                 const cell = data.cells.find(c => c.referee_id === jud.id && c.region === r)
-                                const value = cell?.avg_deviation ?? 0
+                                const value = cell?.value ?? 0
                                 return (
                                     <td key={r} className={`border px-3 py-2 text-center ${deviationColor(value)}`}>
                                         {value}
