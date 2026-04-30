@@ -1,4 +1,3 @@
-# Frontend (Next.js)
 node_modules/
 /.pnp
 .pnp.*
@@ -18,7 +17,6 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# Python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -27,42 +25,30 @@ __pycache__/
 *.egg-info/
 .eggs/
 
-# Virtual environments
 .venv/
 venv/
 env/
 
-# Database
 *.db
 *.sqlite3
 
-# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
 .DS_Store
 Thumbs.db
 *.pem
 
-# Docker
 postgres_data/
 
-# Env
 .env
 .env*
 
-# Logs
 *.log
 logs/
 
-# Build
 dist/
 build/
 
-# Claude
-CLAUDE.md
-AGENTS.md
-.claude/
